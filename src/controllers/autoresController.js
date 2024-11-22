@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 import Autor from '../models/autor.js';
 
 class AutoresController {
@@ -64,6 +65,27 @@ class AutoresController {
         return res.status(404).json({ message: `Autor com id ${params.id} não encontrado` });
       }
       return res.status(200).json({ message: 'autor excluído' });
+    } catch (err) {
+      return res.status(500).json(err.message);
+    }
+  };
+
+  static buscaLivroPorIdAutor = async (req, res) => {
+    const { id } = req.params;
+    try {
+      if (!id || Number.isNaN(id)) {
+        return res.status(400).json({ error: 'ID de autor inválido' });
+      }
+
+      const autor = await Autor.pegarPeloId(id);
+      if (!autor) {
+        return res.status(404).json({ error: `Autor com ID ${id} não encontrado` });
+      }
+      const livrosEncontrados = await Autor.listaLivrosPorAutorId(id);
+      if (livrosEncontrados && livrosEncontrados.length > 0) {
+        return res.status(200).json({ autor, livros: livrosEncontrados });
+      }
+      throw new Error('Nenhum livro encontrado');
     } catch (err) {
       return res.status(500).json(err.message);
     }
