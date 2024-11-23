@@ -20,14 +20,14 @@ class Evento {
   }
 
   static async pegarEventos() {
-    return {
+    return [{
       id: 1,
       nome: 'Lançamento',
       data: '2024-01-01',
       autor_id: 1,
       created_at: '2024-01-01 07:00:00',
       updated_at: '2024-01-01 07:00:00',
-    };
+    }];
   }
 }
 
